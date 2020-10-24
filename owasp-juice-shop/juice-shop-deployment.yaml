@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juice-shop-deployment
+spec:
+  selector:
+    matchLabels:
+      app: juice-shop-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: juice-shop-app
+    spec:
+      containers:
+      - name: juice-shop
+        image: ghcr.io/moritalous/juice-shop:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: NODE_ENV
+            value: tutorial
