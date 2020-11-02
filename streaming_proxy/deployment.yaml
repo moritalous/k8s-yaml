@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streaming-proxy-app
+  template:
+    metadata:
+      labels:
+        app: streaming-proxy-app
+    spec: 
+      containers:
+        - name: ubuntu
+          image: "ubuntu:18.04"
+          imagePullPolicy: IfNotPresent
+          resources: {}
+          command:
+            - "sh"
+            - "-c"
+            - "/workspace/streaming_proxy/command.sh"
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+              readOnly: false
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /home/ubuntu/workspace
+          name: workspace
