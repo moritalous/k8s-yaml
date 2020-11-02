@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb-statefulset
+spec:
+  selector:
+    matchLabels:
+      app: mariadb-app
+  serviceName: mariadb-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb-app
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:latest
+        ports:
+        - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: somewordpress
+          - name: MYSQL_DATABASE
+            value: wordpress
+          - name: MYSQL_USER
+            value: wordpress
+          - name: MYSQL_PASSWORD
+            value: wordpress
+        volumeMounts:
+          - name: mariadb-pvc
+            mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: mariadb-pvc
+      spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: manual
+          selector:
+            matchLabels:
+              app: mariadb
+          resources:
+            requests:
+              storage: 1Gi
