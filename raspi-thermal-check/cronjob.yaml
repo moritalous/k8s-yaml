@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: thermal-check
+spec:
+  schedule: "*/10 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: alpine
+              image: "alpine:latest"
+              imagePullPolicy: IfNotPresent
+              command: ["sh"]
+              args:
+                - -c
+                - 'echo "temp:`cat /host/sys/class/thermal/thermal_zone0/temp`|g|#host:ubuntu"|nc -u -w1 ${HOST} 8125'
+              resources: {}
+              env:
+                - name: HOST
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.hostIP
+              volumeMounts:
+                - name: hostthermalpath
+                  mountPath: /host/sys/class/thermal/thermal_zone0/temp
+                  readOnly: true
+          restartPolicy: Never
+          volumes:
+            - hostPath:
+                path: /sys/class/thermal/thermal_zone0/temp
+              name: hostthermalpath
