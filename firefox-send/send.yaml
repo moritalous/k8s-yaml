@@ -3,13 +3,12 @@ kind: Service
 metadata:
   name: send-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: send-app
   ports:
   - protocol: "TCP"
     port: 1443
-    nodePort: 31443
 ---
 apiVersion: apps/v1
 kind: Deployment

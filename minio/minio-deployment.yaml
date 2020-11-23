@@ -43,12 +43,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: minio
+  name: minio-service
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - port: 9000
-      nodePort: 30090
       protocol: TCP
   selector:
     app: minio

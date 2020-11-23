@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: juice-shop-nodepod
+  name: juice-shop-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: juice-shop-app
   ports:
   - port: 3000
-    nodePort: 32000
+
