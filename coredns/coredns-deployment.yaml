@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coredns-deployment
+spec:
+  selector:
+    matchLabels:
+      app: coredns
+  template:
+    metadata:
+      labels:
+        app: coredns
+    spec:
+      containers:
+      - name: coredns
+        image: coredns/coredns
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        command: ["/coredns", "-conf", "/core/Corefile"]
+        ports:
+        - containerPort: 53
+          protocol: TCP
+        - containerPort: 53
+          protocol: UDP
+        volumeMounts:
+        - name: corefile
+          mountPath: "/core"
+      volumes:
+        - name: corefile
+          configMap:
+              name: coredns-configmap
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coredns-service
+spec:
+  type: NodePort
+  ports:
+    - name: tcp53
+      port: 53
+      protocol: TCP
+      nodePort: 30053
+    - name: udp53
+      port: 53
+      protocol: UDP
+      nodePort: 30053
+  selector:
+    app: coredns
