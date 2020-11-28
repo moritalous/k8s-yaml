@@ -38,15 +38,13 @@ kind: Service
 metadata:
   name: coredns-service
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - name: tcp53
       port: 53
       protocol: TCP
-      nodePort: 30053
     - name: udp53
       port: 53
       protocol: UDP
-      nodePort: 30053
   selector:
     app: coredns
