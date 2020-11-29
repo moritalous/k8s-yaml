@@ -32,6 +32,10 @@ spec:
               value: redis-service
             - name: FXA_REQUIRED
               value: "false"
+            - name: MAX_FILE_SIZE
+              value: "26843545600"
+            - name: ANON_MAX_FILE_SIZE
+              value: "10737418240"
             # - name: FILE_DIR
             #   value: /tmp/send
             # - name: BASE_URL
