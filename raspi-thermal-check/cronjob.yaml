@@ -3,7 +3,8 @@ kind: CronJob
 metadata:
   name: thermal-check
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/30 * * * *"
+  concurrencyPolicy: Allow
   jobTemplate:
     spec:
       template:
